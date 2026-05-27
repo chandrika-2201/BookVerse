@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Book - Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-custom">
+            <a class="navbar-brand" th:href="@{/SellerHome}">Online Book Store</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="color:white; font-size:24px;">☰</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/SellerHome}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/storebooks}">Store Books</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh; margin-top:30px; margin-bottom:30px;">
+        <div class="glass-container" style="max-width: 550px;">
+            <h2 class="glass-title">Update Book Detail</h2>
+
+            <form th:action="@{/updatebook}" method="post">
+                <input type="hidden" name="barcode" th:value="${book.barcode}">
+                
+                <div class="text-center mb-4 py-3" style="background: rgba(255, 255, 255, 0.02); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <p class="text-muted small m-0">Editing Book Code</p>
+                    <h4 style="color:#00f2fe; font-weight:600;" th:text="${book.barcode}">CODE</h4>
+                </div>
+
+                <div class="form-group">
+                    <label for="bookName" class="text-muted small">Book Name</label>
+                    <input type="text" name="name" id="bookName" class="form-control glass-input" th:value="${book.name}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="bookAuthor" class="text-muted small">Book Author</label>
+                    <input type="text" name="author" id="bookAuthor" class="form-control glass-input" th:value="${book.author}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="bookPrice" class="text-muted small">Book Price</label>
+                    <input type="number" step="0.01" name="price" id="bookPrice" class="form-control glass-input" th:value="${book.price}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="bookQuantity" class="text-muted small">Book Quantity</label>
+                    <input type="number" name="quantity" id="bookQuantity" class="form-control glass-input" th:value="${book.quantity}" required>
+                </div>
+
+                <button type="submit" name="updateFormSubmitted" value="true" class="btn btn-block btn-glass mt-4">✏️ Update Book Details</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

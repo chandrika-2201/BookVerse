@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <a class="navbar-brand" th:href="@{/SellerHome}">Online Book Store</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" style="color:white; font-size:24px;">☰</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/SellerHome}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/storebooks}">Inventory List</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/addbook}">Add Books</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/removebook}">Remove Books</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid" style="width: 90%; margin-top: 40px; margin-bottom: 50px;">
+        
+        <!-- Welcome Banner Section -->
+        <div class="glass-container mb-4" style="max-width: 100%; margin: 0; padding: 30px;">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="glass-title text-left mb-1" style="font-size: 32px;">
+                        👑 Welcome, <span th:text="${session.user.firstName + ' ' + session.user.lastName}" style="color:#00f2fe; font-weight:700;">Admin</span>!
+                    </h2>
+                    <p class="text-muted mb-0">Control panel and sales executive overview. Monitor store revenues, manage catalog books, and check stock levels.</p>
+                </div>
+                <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                    <span class="badge badge-info p-2" style="background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe; font-size: 14px; border-radius: 20px;">
+                        <i class="far fa-calendar-alt mr-2"></i> <span id="currentDate">May 27, 2026</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4-Stat Grid -->
+        <div class="row mb-4 mt-4">
+            <!-- Stat 1: Revenue -->
+            <div class="col-md-3 mb-3">
+                <div class="glass-container text-center" style="max-width: 100%; margin: 0; padding: 25px; border-color: rgba(56, 239, 125, 0.2);">
+                    <div style="background: rgba(56, 239, 125, 0.1); width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 12px;">
+                        <i class="fas fa-wallet" style="color: #38ef7d; font-size: 22px;"></i>
+                    </div>
+                    <h3 style="color: #38ef7d; font-weight: 700; font-size: 26px;" th:text="'₹' + ${totalRevenue}">₹0</h3>
+                    <p class="text-muted small mb-0 text-uppercase" style="letter-spacing: 0.8px;">Total Revenue</p>
+                </div>
+            </div>
+            <!-- Stat 2: Orders Count -->
+            <div class="col-md-3 mb-3">
+                <div class="glass-container text-center" style="max-width: 100%; margin: 0; padding: 25px; border-color: rgba(0, 242, 254, 0.2);">
+                    <div style="background: rgba(0, 242, 254, 0.1); width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 12px;">
+                        <i class="fas fa-shopping-basket" style="color: #00f2fe; font-size: 22px;"></i>
+                    </div>
+                    <h3 style="color: #ffffff; font-weight: 700; font-size: 26px;" th:text="${totalOrders}">0</h3>
+                    <p class="text-muted small mb-0 text-uppercase" style="letter-spacing: 0.8px;">Orders Processed</p>
+                </div>
+            </div>
+            <!-- Stat 3: Titles -->
+            <div class="col-md-3 mb-3">
+                <div class="glass-container text-center" style="max-width: 100%; margin: 0; padding: 25px; border-color: rgba(79, 172, 254, 0.2);">
+                    <div style="background: rgba(79, 172, 254, 0.1); width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 12px;">
+                        <i class="fas fa-book" style="color: #4facfe; font-size: 22px;"></i>
+                    </div>
+                    <h3 style="color: #ffffff; font-weight: 700; font-size: 26px;" th:text="${totalBookTitles}">0</h3>
+                    <p class="text-muted small mb-0 text-uppercase" style="letter-spacing: 0.8px;">Unique Book Titles</p>
+                </div>
+            </div>
+            <!-- Stat 4: Customers -->
+            <div class="col-md-3 mb-3">
+                <div class="glass-container text-center" style="max-width: 100%; margin: 0; padding: 25px; border-color: rgba(185, 43, 39, 0.2);">
+                    <div style="background: rgba(185, 43, 39, 0.1); width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 12px;">
+                        <i class="fas fa-users" style="color: #b92b27; font-size: 22px;"></i>
+                    </div>
+                    <h3 style="color: #ffffff; font-weight: 700; font-size: 26px;" th:text="${totalCustomers}">0</h3>
+                    <p class="text-muted small mb-0 text-uppercase" style="letter-spacing: 0.8px;">Registered Users</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Section: Alerts and Actions -->
+        <div class="row mb-5 mt-4">
+            
+            <!-- Left Panel: Low Stock Alerts -->
+            <div class="col-lg-7 mb-4">
+                <div class="glass-container mb-0" style="max-width: 100%; margin: 0; padding: 30px; height: 100%;">
+                    <h4 style="color:#ff416c; font-weight: 700; margin-bottom: 20px;">
+                        <i class="fas fa-exclamation-triangle mr-2"></i> Low Stock Alerts
+                    </h4>
+                    
+                    <div th:if="${#lists.isEmpty(lowStockBooks)}" class="text-center py-5">
+                        <i class="fas fa-check-circle" style="color:#38ef7d; font-size: 40px; margin-bottom: 12px;"></i>
+                        <h5 style="color:#38ef7d">Inventory Fully Stocked!</h5>
+                        <p class="text-muted small mt-2">All book volumes are healthy and have at least 10 items in stock.</p>
+                    </div>
+
+                    <div th:if="${not #lists.isEmpty(lowStockBooks)}" class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                        <table class="table table-borderless text-white small" style="background: rgba(255, 255, 255, 0.01);">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #65738c;">
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th class="text-center">Stock</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="book : ${lowStockBooks}" style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                                    <td style="font-weight:600;" th:text="${book.name}">Book Title</td>
+                                    <td class="text-muted" th:text="${book.author}">Author</td>
+                                    <td class="text-center">
+                                        <span class="badge px-3 py-1 text-danger" style="background: rgba(255,65,108,0.1); border: 1px solid rgba(255,65,108,0.3); border-radius:10px; font-weight:700;" th:text="${book.quantity}">0</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <a th:href="@{/updatebook(barcode=${book.barcode})}" class="btn btn-sm btn-glass px-3" style="padding: 4px 12px; font-size: 11px;">Restock ✏️</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Administrative Actions -->
+            <div class="col-lg-5 mb-4">
+                <div class="glass-container mb-0 d-flex flex-column justify-content-between" style="max-width: 100%; margin: 0; padding: 30px; height: 100%;">
+                    <h4 style="color:#00f2fe; font-weight: 700; margin-bottom: 20px;">
+                        <i class="fas fa-tools mr-2"></i> Inventory Tools
+                    </h4>
+                    
+                    <div class="portal-card px-3 py-2 my-2 text-left" onclick="window.location.href='/storebooks'" style="display:flex; align-items:center; cursor:pointer;">
+                        <div style="background: rgba(0, 242, 254, 0.1); width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
+                            <i class="fas fa-list-ul" style="color: #00f2fe;"></i>
+                        </div>
+                        <div>
+                            <h6 style="color:#00f2fe; font-weight: 600; margin:0;">Inventory Control list</h6>
+                            <p class="text-muted small mb-0" style="font-size:11px;">Update price, titles, and restock counts.</p>
+                        </div>
+                    </div>
+
+                    <div class="portal-card px-3 py-2 my-2 text-left" onclick="window.location.href='/addbook'" style="display:flex; align-items:center; cursor:pointer;">
+                        <div style="background: rgba(56, 239, 125, 0.1); width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
+                            <i class="fas fa-plus" style="color: #38ef7d;"></i>
+                        </div>
+                        <div>
+                            <h6 style="color:#38ef7d; font-weight: 600; margin:0;">Add New Book</h6>
+                            <p class="text-muted small mb-0" style="font-size:11px;">Introduce new catalog collections to store.</p>
+                        </div>
+                    </div>
+
+                    <div class="portal-card px-3 py-2 my-2 text-left" onclick="window.location.href='/removebook'" style="display:flex; align-items:center; cursor:pointer;">
+                        <div style="background: rgba(255, 75, 43, 0.1); width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
+                            <i class="fas fa-trash-alt" style="color: #ff4b2b;"></i>
+                        </div>
+                        <div>
+                            <h6 style="color:#ff4b2b; font-weight: 600; margin:0;">Remove Volumes</h6>
+                            <p class="text-muted small mb-0" style="font-size:11px;">Permanently delete barcode records from store.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global Sales Ledger -->
+        <div class="d-flex justify-content-between align-items-center mb-2 mt-5">
+            <h4 style="color:#00f2fe; font-weight:700; margin-bottom: 0;"><i class="fas fa-receipt mr-2"></i> Global Sales Log</h4>
+            <span class="text-muted small" th:text="${totalOrders + ' transactions total'}">0 items</span>
+        </div>
+
+        <div class="glass-table-container" style="width: 100%; margin-top: 10px;">
+            <!-- Empty Log -->
+            <div th:if="${#lists.isEmpty(recentOrders)}" class="text-center py-5">
+                <h4 style="color:#00f2fe">No Sales Recorded Yet 📭</h4>
+                <p class="text-muted">Wait for customer logins and purchases to populate transaction logs.</p>
+            </div>
+
+            <!-- Ledger Table -->
+            <table class="glass-table" th:if="${not #lists.isEmpty(recentOrders)}">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer Email</th>
+                        <th>Book Name</th>
+                        <th style="text-align:center;">Qty</th>
+                        <th>Unit Price</th>
+                        <th>Subtotal</th>
+                        <th>Purchase Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${recentOrders}">
+                        <td th:text="${order.orderId}" style="color:#00f2fe; font-weight:600;">#ID</td>
+                        <td th:text="${order.customerEmail}">Email</td>
+                        <td th:text="${order.bookName}" style="font-weight:600;">Book</td>
+                        <td th:text="${order.quantity}" style="text-align:center;">Qty</td>
+                        <td th:text="'₹' + ${order.pricePerItem}">Price</td>
+                        <td th:text="'₹' + ${order.subtotal}" style="font-weight:600; color:#38ef7d;">Amount</td>
+                        <td th:text="${#temporals.format(order.orderDate, 'dd-MMM-yyyy HH:mm')}">Date</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Replace standard libraries -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <script>
+        // Display calendar date dynamically
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    </script>
+</body>
+</html>

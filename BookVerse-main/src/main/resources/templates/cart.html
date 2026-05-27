@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart - Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <header th:replace="fragments/header :: header"></header>
+
+
+    <div class="container-fluid" style="width: 90%; margin-top: 40px;">
+        <h2 class="glass-title text-left mb-4">Your Shopping Cart</h2>
+
+        <div class="glass-table-container">
+            <div th:if="${#lists.isEmpty(cartList)}" class="text-center py-5">
+                <h4 style="color:#ff416c">No Items In the Cart 🛒</h4>
+                <a th:href="@{/viewbook}" class="btn-glass mt-4 d-inline-block text-decoration-none" style="color:#000;">Browse Books</a>
+            </div>
+
+            <table class="glass-table" th:if="${not #lists.isEmpty(cartList)}">
+                <thead>
+                    <tr>
+                        <th>BookId</th>
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th>Price/Item</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${cartList}">
+                        <td th:text="${item.book.barcode}">BookId</td>
+                        <td th:text="${item.book.name}" style="font-weight:600; color:#ffffff;">Name</td>
+                        <td th:text="${item.book.author}">Author</td>
+                        <td th:text="'₹' + ${item.book.price}">Price</td>
+                        <td>
+                            <form method="post" th:action="@{/cart}" class="d-inline-flex align-items-center">
+                                <input type="hidden" name="selectedBookId" th:value="${item.book.barcode}">
+                                <button type="submit" name="removeFromCart" class="btn-glass-danger btn-sm px-2">-</button>
+                                <span class="mx-3" style="font-weight:500; font-size:16px;" th:text="${item.quantity}">0</span>
+                                <button type="submit" name="addToCart" class="btn-glass-success btn-sm px-2">+</button>
+                            </form>
+                        </td>
+                        <td th:text="'₹' + ${item.book.price * item.quantity}" style="font-weight: 600; color: #00f2fe;">Amount</td>
+                    </tr>
+                    
+                    <tr style="background: rgba(0, 242, 254, 0.05);">
+                        <th colspan="5" style="color:#e5e9f0; text-align:center; font-weight:700;">Total Amount To Pay</th>
+                        <th style="color:#00f2fe; font-size:18px; font-weight:700;" th:text="'₹' + ${totalAmount}">₹0.0</th>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div th:if="${not #lists.isEmpty(cartList)}" class="text-right mt-4 pr-3">
+                <form th:action="@{/checkout}" method="post">
+                    <input type="hidden" name="amount" th:value="${totalAmount}">
+                    <input type="submit" class="btn-glass px-5" th:value="'Proceed to Pay ₹' + ${totalAmount}">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

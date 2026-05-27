@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Book Store - Access Portals</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <header th:replace="fragments/header :: header"></header>
+
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="glass-container">
+            <h1 class="glass-title">Welcome to Online Book Store</h1>
+            <p class="text-center text-muted mb-4">Please select your portal to continue</p>
+            
+            <div class="portal-card" onclick="window.location.href='/SellerLogin'">
+                <h4 style="color:#00f2fe">🔑 Admin / Seller Portal</h4>
+                <p class="text-muted small mt-2">Manage the book inventory, update stock counts, and delete titles.</p>
+            </div>
+            
+            <div class="portal-card" onclick="window.location.href='/CustomerLogin'">
+                <h4 style="color:#4facfe">🛒 Customer Portal</h4>
+                <p class="text-muted small mt-2">Browse the bookstore, manage your shopping cart, and complete purchase receipts.</p>
+            </div>
+
+            <div class="text-center mt-4">
+                <a th:href="@{/CustomerRegister}" style="color: #00f2fe">New Customer? Register Account Here</a>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

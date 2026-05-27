@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <a class="navbar-brand" th:href="@{/}">Online Book Store</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" style="color:white; font-size:24px;">☰</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+                    <li class="nav-item" th:if="${session.user != null && session.usertype == 'CUSTOMER'}">
+                        <a class="nav-link" th:href="@{/viewbook}">Books</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user != null && session.usertype == 'CUSTOMER'}">
+                        <a class="nav-link" th:href="@{/cart}">Cart</a>
+                    </li>
+                    
+                    <!-- Show when logged in as CUSTOMER -->
+                    <li class="nav-item dropdown" th:if="${session.user != null && session.usertype == 'CUSTOMER'}">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span th:text="${session.user.firstName}">User</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" th:href="@{/profile}">My Profile</a>
+                            <a class="dropdown-item" th:href="@{/orderhistory}">Order History</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+                        </div>
+                    </li>
+
+                    <!-- Show when NOT logged in -->
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link" th:href="@{/CustomerLogin}">Customer Login</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link" th:href="@{/SellerLogin}">Seller Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Dashboard - Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header th:replace="fragments/header :: header"></header>
+
+    <div class="container-fluid" style="width: 90%; margin-top: 40px; margin-bottom: 50px;">
+        
+        <!-- Welcome Banner Section -->
+        <div class="glass-container mb-4" style="max-width: 100%; margin: 0; padding: 30px;">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="glass-title text-left mb-1" style="font-size: 32px;">
+                        👋 Hello, <span th:text="${user.firstName + ' ' + user.lastName}" style="color:#00f2fe; font-weight:700;">Customer</span>!
+                    </h2>
+                    <p class="text-muted mb-0">Welcome back to your personalized reader dashboard. Discover new worlds and track your reading orders.</p>
+                </div>
+                <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                    <span class="badge badge-info p-2" style="background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe; font-size: 14px; border-radius: 20px;">
+                        <i class="far fa-calendar-alt mr-2"></i> <span id="currentDate">May 27, 2026</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats Grid -->
+        <div class="row mb-4 mt-4">
+            <!-- Stat 1 -->
+            <div class="col-md-4 mb-3">
+                <div class="glass-container text-center" style="max-width: 100%; margin: 0; padding: 25px; border-color: rgba(0, 242, 254, 0.15);">
+                    <div style="background: rgba(0, 242, 254, 0.1); width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px;">
+                        <i class="fas fa-shopping-bag" style="color: #00f2fe; font-size: 24px;"></i>
+                    </div>
+                    <h3 style="color: #ffffff; font-weight: 700; font-size: 28px;" th:text="${totalOrders}">0</h3>
+                    <p class="text-muted small mb-0 text-uppercase" style="letter-spacing: 1px;">Total Books Purchased</p>
+                </div>
+            </div>
+            <!-- Stat 2 -->
+            <div class="col-md-4 mb-3">
+                <div class="glass-container text-center" style="max-width: 100%; margin: 0; padding: 25px; border-color: rgba(56, 239, 125, 0.15);">
+                    <div style="background: rgba(56, 239, 125, 0.1); width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px;">
+                        <i class="fas fa-wallet" style="color: #38ef7d; font-size: 24px;"></i>
+                    </div>
+                    <h3 style="color: #38ef7d; font-weight: 700; font-size: 28px;" th:text="'₹' + ${totalSpent}">₹0</h3>
+                    <p class="text-muted small mb-0 text-uppercase" style="letter-spacing: 1px;">Total Expenditure</p>
+                </div>
+            </div>
+            <!-- Stat 3 -->
+            <div class="col-md-4 mb-3">
+                <div class="glass-container text-center" style="max-width: 100%; margin: 0; padding: 25px; border-color: rgba(79, 172, 254, 0.15);">
+                    <div style="background: rgba(79, 172, 254, 0.1); width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px;">
+                        <i class="fas fa-shopping-cart" style="color: #4facfe; font-size: 24px;"></i>
+                    </div>
+                    <h3 style="color: #ffffff; font-weight: 700; font-size: 28px;" th:text="${cartItemsCount}">0</h3>
+                    <p class="text-muted small mb-0 text-uppercase" style="letter-spacing: 1px;">Items In Your Cart</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Access Shortcuts -->
+        <h4 style="color:#00f2fe; font-weight:700; margin-bottom:15px; margin-top: 30px;"><i class="fas fa-bolt mr-2"></i> Quick Actions</h4>
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="portal-card" onclick="window.location.href='/viewbook'" style="margin: 0; padding: 25px; height: 100%;">
+                    <h4 style="color:#00f2fe; font-weight: 600;"><i class="fas fa-book-open mr-2"></i> Browse Books Catalog</h4>
+                    <p class="text-muted small mt-2 mb-0">Search, browse genres, check availability, and add premium volumes straight to your reading cart.</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="portal-card" onclick="window.location.href='/cart'" style="margin: 0; padding: 25px; height: 100%;">
+                    <h4 style="color:#4facfe; font-weight: 600;"><i class="fas fa-shopping-basket mr-2"></i> Manage Shopping Cart</h4>
+                    <p class="text-muted small mt-2 mb-0">Review your chosen books, adjust ordering quantities, and complete secure checkout receipts.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Purchase History Section -->
+        <div class="d-flex justify-content-between align-items-center mb-2 mt-5">
+            <h4 style="color:#00f2fe; font-weight:700; margin-bottom: 0;"><i class="fas fa-history mr-2"></i> Purchase History</h4>
+            <span class="text-muted small" th:text="${orders.size() + ' transaction(s) total'}">0 items</span>
+        </div>
+        
+        <div class="glass-table-container" style="width: 100%; margin-top: 10px;">
+            <!-- Empty state -->
+            <div th:if="${#lists.isEmpty(orders)}" class="text-center py-5">
+                <h4 style="color:#00f2fe">No Purchase History Yet 📭</h4>
+                <p class="text-muted mt-2">You haven't bought any books yet. Start your reading list today!</p>
+                <a th:href="@{/viewbook}" class="btn-glass mt-3 d-inline-block text-decoration-none" style="color:#000;">Explore Bookstore 📚</a>
+            </div>
+
+            <!-- Table content -->
+            <table class="glass-table" th:if="${not #lists.isEmpty(orders)}">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Book Name</th>
+                        <th style="text-align:center;">Qty</th>
+                        <th>Price/Item</th>
+                        <th>Subtotal</th>
+                        <th>Purchase Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.orderId}" style="color:#00f2fe; font-weight:600;">#ID</td>
+                        <td th:text="${order.bookName}" style="font-weight:600;">Book Name</td>
+                        <td th:text="${order.quantity}" style="text-align:center;">Qty</td>
+                        <td th:text="'₹' + ${order.pricePerItem}">Price</td>
+                        <td th:text="'₹' + ${order.subtotal}" style="font-weight:600; color:#38ef7d;">Subtotal</td>
+                        <td th:text="${#temporals.format(order.orderDate, 'dd-MMM-yyyy HH:mm')}">Date</td>
+                        <td>
+                            <span class="badge badge-success px-3 py-2" style="background: rgba(56, 239, 125, 0.1); border: 1px solid rgba(56, 239, 125, 0.3); color: #38ef7d; border-radius: 20px;" th:text="${order.status}">Completed</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <script>
+        // Simple client script to display the formatted date dynamically
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    </script>
+</body>
+</html>

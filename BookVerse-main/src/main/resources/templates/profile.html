@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Profile - Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <header th:replace="fragments/header :: header"></header>
+
+    <div class="container-fluid" style="width: 90%; margin-top: 40px; margin-bottom: 40px;">
+        <h2 class="glass-title text-left mb-4">👤 Customer Profile</h2>
+
+        <!-- Profile Card -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="glass-container" style="max-width: 100%; margin: 0;">
+                    <h4 style="color:#00f2fe; font-weight:700; margin-bottom:20px;">Account Information</h4>
+                    
+                    <div class="mb-3">
+                        <label class="text-muted small">Full Name</label>
+                        <p class="text-white" th:text="${user.firstName + ' ' + user.lastName}" style="font-weight:600; font-size:16px;">User Name</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="text-muted small">Email Address</label>
+                        <p class="text-white" th:text="${user.emailId}" style="font-weight:600; font-size:16px;">Email</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="text-muted small">Phone Number</label>
+                        <p class="text-white" th:text="${user.phone}" style="font-weight:600; font-size:16px;">Phone</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="text-muted small">Address</label>
+                        <p class="text-white" th:text="${user.address}" style="font-weight:600; font-size:14px;">Address</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Card -->
+            <div class="col-md-6">
+                <div class="glass-container" style="max-width: 100%; margin: 0;">
+                    <h4 style="color:#38ef7d; font-weight:700; margin-bottom:30px;">📊 Your Statistics</h4>
+                    
+                    <div class="row text-center mb-4">
+                        <div class="col-md-6 mb-3">
+                            <div style="background: rgba(0, 242, 254, 0.1); border-radius: 12px; padding: 20px;">
+                                <h3 style="color:#00f2fe; font-weight:700;" th:text="${totalOrders}">0</h3>
+                                <p class="text-muted small mb-0">Total Orders</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div style="background: rgba(56, 239, 125, 0.1); border-radius: 12px; padding: 20px;">
+                                <h3 style="color:#38ef7d; font-weight:700;" th:text="'₹' + ${totalSpent}">₹0</h3>
+                                <p class="text-muted small mb-0">Total Spent</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a th:href="@{/orderhistory}" class="btn-glass w-100 mt-3" style="color:#000; text-decoration:none; display:inline-block; text-align:center;">View All Orders →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <h4 style="color:#00f2fe; font-weight:700; margin-bottom:20px;">📦 Recent Orders</h4>
+        <div class="glass-table-container">
+            <div th:if="${#lists.isEmpty(recentOrders)}" class="text-center py-4">
+                <p class="text-muted">No orders yet</p>
+            </div>
+
+            <table class="glass-table" th:if="${not #lists.isEmpty(recentOrders)}">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Book Name</th>
+                        <th>Qty</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${recentOrders}">
+                        <td th:text="${order.orderId}" style="color:#00f2fe; font-weight:600;">#ID</td>
+                        <td th:text="${order.bookName}" style="font-weight:600;">Book</td>
+                        <td th:text="${order.quantity}" style="text-align:center;">Qty</td>
+                        <td th:text="'₹' + ${order.subtotal}" style="font-weight:600; color:#38ef7d;">Amount</td>
+                        <td th:text="${#temporals.format(order.orderDate, 'dd MMM yyyy')}">Date</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-4">
+            <a th:href="@{/CustomerHome}" class="btn-glass px-5">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
