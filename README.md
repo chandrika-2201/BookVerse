@@ -1,6 +1,6 @@
-# 📖 Online Book Store - Premium Glassmorphic Web App
+# 📖 BookVerse - Premium Glassmorphic Web App
 
-A state-of-the-art, high-fidelity **Online Book Store** application designed with premium glassmorphism aesthetics, glowing visual components, and real-time business dashboards. Built using **Spring Boot 3**, **Spring Data JPA**, **Java 21**, **Thymeleaf**, and **MySQL/H2**.
+A state-of-the-art, high-fidelity **BookVerse** application designed with premium glassmorphism aesthetics, glowing visual components, and real-time business dashboards. Built using **Spring Boot 3**, **Spring Data JPA**, **Java 21**, **Thymeleaf**, and **MySQL/H2**.
 
 ---
 
